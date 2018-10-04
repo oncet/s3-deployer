@@ -1,0 +1,15 @@
+{
+    "aws": {
+        "accessKeyId": "",
+        "secretAccessKey": "",
+        "s3": {
+            "bucket": ""
+        }
+    },
+    "walk": {
+        "path": "",
+        "filters": [
+            ".git"
+        ]
+    }
+}
