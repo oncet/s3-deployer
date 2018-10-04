@@ -31,3 +31,17 @@ The contents of this path will be uploaded to the S3 bucket. E. g. `dist` or `bu
 ### `filters`
 
 Optional. An array of directories to be ignored. E. g. `.git` or `node_modules`.
+
+## Usage
+
+Simply call the script using node.
+
+```
+node node_modules/deploy-s3/index.js
+```
+
+You can use a different config file by passing an argument.
+
+```
+node node_modules/deploy-s3/index.js my-config.json
+```
