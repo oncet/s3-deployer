@@ -4,6 +4,14 @@ A node script to upload files to S3.
 
 All files will be uploaded to a `history/<timestamp>` folder and then copied to the bucket's root.
 
+## Installation
+
+You can install the package using npm.
+
+```
+npm i https://github.com/oncet/deploy-s3
+```
+
 ## Configuration
 
 A `config.example.json` file is included.
