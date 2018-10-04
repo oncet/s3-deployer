@@ -1,0 +1,11 @@
+{
+  "name": "deploy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.325.0",
+    "mime": "^2.3.1",
+    "walk": "^2.3.14"
+  }
+}
