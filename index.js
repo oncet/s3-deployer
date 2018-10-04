@@ -7,6 +7,7 @@ var config = config(process.argv[2]);
 
 if(!config) {
     console.log('Config file not found');
+    return false;
 }
 
 console.log('Config file loaded');
