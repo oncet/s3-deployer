@@ -14,7 +14,13 @@ npm i https://github.com/oncet/deploy-s3
 
 ## Configuration
 
-A `config.example.json` file is included.
+Copy the included `config.example.json` to your project.
+
+```
+cp node_modules/deploy-s3/config.example.json config.json
+```
+
+Now edit the file.
 
 ### `accessKeyId` and `secretAccessKey`
 
