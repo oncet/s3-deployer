@@ -4,19 +4,12 @@ var walk = require('walk');
 var mime = require('mime');
 var proc = require('child_process');
 
-var git = proc.execSync('git --version').toString().startsWith('git version');
-
-if(!git) {
-    console.log('Git not found');
-    return false;
-}
-
 var status = proc.execSync('git status').toString().split("\n");
 
 var nothingToCommit = status[1].startsWith('nothing to commit');
 
 if(!nothingToCommit) {
-    console.log('There are pending changes or not in a git repository');
+    console.log('There are pending changes');
     return false;
 }
 
