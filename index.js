@@ -2,6 +2,23 @@ var fs   = require('fs');
 var aws  = require('aws-sdk');
 var walk = require('walk');
 var mime = require('mime');
+var proc = require('child_process');
+
+var git = proc.execSync('git --version').toString().startsWith('git version');
+
+if(!git) {
+    console.log('Git not found');
+    return false;
+}
+
+var status = proc.execSync('git status').toString().split("\n");
+
+var nothingToCommit = status[1].startsWith('nothing to commit');
+
+if(!nothingToCommit) {
+    console.log('There are pending changes or not in a git repository');
+    return false;
+}
 
 var config = config(process.argv[2]);
 
@@ -18,7 +35,7 @@ aws.config.secretAccessKey = config.aws.secretAccessKey;
 
 var s3 = new aws.S3();
 
-var date = Date.now();
+var hash = proc.execSync('git rev-parse --short HEAD').toString().trim();
 
 var files = [];
 
@@ -37,7 +54,7 @@ function step(root, file, next) {
 
     var fileContent = fs.createReadStream(filePath);
 
-    var uploadTo = 'history/' + date + '/' + filePath.replace(config.walk.path + "/", "");
+    var uploadTo = 'history/' + hash + '/' + filePath.replace(config.walk.path + "/", "");
 
     var params = {
         ACL: 'private',
@@ -121,11 +138,11 @@ function end() {
 
 function deploy(files) {
 
-	console.log('Deploying...');
+    console.log('Deploying...');
 
-	files.forEach(function(file) {
+    files.forEach(function(file) {
 
-		var copyTo = file.path.replace(config.walk.path + '/', '');
+        var copyTo = file.path.replace(config.walk.path + '/', '');
 
         var params = {
             ACL: 'public-read',
@@ -147,15 +164,11 @@ function deploy(files) {
     });
 }
 
-function config(configFile) {
+function config(file = 'config.json') {
 
-    if(!configFile) {
-        configFile = 'config.json';
-    }
-
-    if(!fs.existsSync(configFile)) {
+    if(!fs.existsSync(file)) {
         return false;
     }
 
-    return JSON.parse(fs.readFileSync('config.json'));
+    return JSON.parse(fs.readFileSync(file));
 }

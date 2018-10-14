@@ -2,7 +2,7 @@
 
 A node script to upload files to S3.
 
-All files will be uploaded to a `history/<timestamp>` folder and then copied to the bucket's root.
+All files will be uploaded to a `history/<hash>` folder and then copied to the bucket's root.
 
 ## Installation
 
