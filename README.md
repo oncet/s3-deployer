@@ -14,13 +14,7 @@ npm i s3-deployer -g
 
 ## Configuration
 
-Copy the included `config.example.json` to your project. E.g.:
-
-```
-cp /usr/local/lib/node_modules/s3-deployer/config.example.json config.json
-```
-
-Now edit the file.
+Copy the included `config.example.json` to your project as `config.json` and edit the file.
 
 ### `accessKeyId` and `secretAccessKey`
 
@@ -45,8 +39,7 @@ Simply call the script binary from inside your project.
 ```
 s3-deployer
 ```
-
-You can use a different config file by passing an argument.
+By default it will look for a `config.json` file but you can use a different config file by passing an argument.
 
 ```
 s3-deployer my-config.json
