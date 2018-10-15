@@ -9,7 +9,7 @@ All files will be uploaded to a `history/<hash>` folder and then copied to the b
 You can install the package globally using npm.
 
 ```
-npm i https://github.com/oncet/s3-deployer -g
+npm i s3-deployer -g
 ```
 
 ## Configuration
