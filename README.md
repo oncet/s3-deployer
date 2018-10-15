@@ -6,18 +6,18 @@ All files will be uploaded to a `history/<hash>` folder and then copied to the b
 
 ## Installation
 
-You can install the package using npm.
+You can install the package globally using npm.
 
 ```
-npm i https://github.com/oncet/deploy-s3
+npm i https://github.com/oncet/s3-deployer -g
 ```
 
 ## Configuration
 
-Copy the included `config.example.json` to your project.
+Copy the included `config.example.json` to your project. E.g.:
 
 ```
-cp node_modules/deploy-s3/config.example.json config.json
+cp /usr/local/lib/node_modules/s3-deployer/config.example.json config.json
 ```
 
 Now edit the file.
@@ -40,14 +40,14 @@ Optional. An array of directories to be ignored. E. g. `.git` or `node_modules`.
 
 ## Usage
 
-Simply call the script using node.
+Simply call the script binary from inside your project.
 
 ```
-node node_modules/deploy-s3/index.js
+s3-deployer
 ```
 
 You can use a different config file by passing an argument.
 
 ```
-node node_modules/deploy-s3/index.js my-config.json
+s3-deployer my-config.json
 ```
