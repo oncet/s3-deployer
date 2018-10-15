@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 var fs   = require('fs');
 var aws  = require('aws-sdk');
 var walk = require('walk');

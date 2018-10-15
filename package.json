@@ -1,8 +1,22 @@
 {
-  "name": "deploy-s3",
+  "name": "s3-deployer",
   "version": "1.0.0",
+  "description": "S3 uploader tool for node.",
+  "keywords": [
+    "aws-s3",
+    "deployer"
+  ],
+  "homepage": "https://github.com/oncet/s3-deployer",
+  "bugs": {
+    "url": "https://github.com/oncet/s3-deployer/issues"
+  },
   "main": "index.js",
   "license": "ISC",
+  "bin": "./index.js",
+  "repository": {
+    "type": "git",
+    "ulr": "github:oncet/s3-deployer"
+  },
   "dependencies": {
     "aws-sdk": "^2.325.0",
     "mime": "^2.3.1",
