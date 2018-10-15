@@ -9,7 +9,7 @@ All files will be uploaded to a `history/<hash>` folder and then copied to the b
 You can install the package globally using npm.
 
 ```
-npm i s3-deployer -g
+npm i -g s3-deployer
 ```
 
 ## Configuration
@@ -39,7 +39,7 @@ Simply call the script binary from inside your project.
 ```
 s3-deployer
 ```
-By default it will look for a `config.json` file but you can use a different config file by passing an argument.
+By default it will look for a `config.json` file but you can use a different file by passing an argument.
 
 ```
 s3-deployer my-config.json
