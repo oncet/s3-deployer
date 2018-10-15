@@ -32,11 +32,11 @@ Bucket name.
 
 ### `path`
 
-The contents of this path will be uploaded to the S3 bucket. E. g. `dist` or `build`.
+The contents of this path will be uploaded to the S3 bucket. E.g. `dist` or `build`.
 
 ### `filters`
 
-Optional. An array of directories to be ignored. E. g. `.git` or `node_modules`.
+Optional. An array of directories to be ignored. E.g. `.git` or `node_modules`.
 
 ## Usage
 
