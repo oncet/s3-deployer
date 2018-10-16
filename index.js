@@ -5,20 +5,33 @@ var aws  = require('aws-sdk');
 var walk = require('walk');
 var mime = require('mime');
 var proc = require('child_process');
+var args = require('minimist')(process.argv.slice(2), {
+    string: 'config',
+    boolean: 'force',
+    default: {
+        config: 'config.json',
+        force: false
+    },
+    alias: {
+        c: 'config',
+        f: 'force'
+    }
+});
+
+// Get config file
+var config = config(args.config);
+
+if(!config) {
+    console.log('Config file not found');
+    return false;
+}
 
 var status = proc.execSync('git status').toString().split("\n");
 
 var nothingToCommit = status[1].startsWith('nothing to commit');
 
-if(!nothingToCommit) {
+if(!nothingToCommit && !args.force) {
     console.log('There are pending changes');
-    return false;
-}
-
-var config = config(process.argv[2]);
-
-if(!config) {
-    console.log('Config file not found');
     return false;
 }
 
@@ -38,7 +51,48 @@ var files = [];
 var walker = walk.walk(config.walk.path, {filters: config.walk.filters});
 
 // For each file on the directory...
-walker.on('file', function() {
+walker.on('file', function(root, file, next) {
+
+    var filePath = root + '/' + file.name;
+
+    var uploadTo = 'history/' + hash + '/' + filePath.replace(config.walk.path + "/", "");
+
+    var params = {
+        ACL: 'private',
+        Body: fs.createReadStream(filePath),
+        Bucket: config.aws.s3.bucket,
+        Key: uploadTo
+    };
+
+    var type = mime.getType(file.name);
+
+    if(type) {
+        params.ContentType = type;
+    }
+
+    console.log('Uploading ' + file.name + ' to ' + uploadTo);
+
+    s3.upload(params, function(err, data) {
+
+        if (err) {
+            console.log("Upload failed\n", err.message);
+        }
+
+        else {
+            console.log('File successfully uploaded');
+
+            files.push({
+                'path': filePath,
+                'uploadTo': uploadTo
+            });
+
+            next();
+        }
+    });
+});
+
+// After uploading all files.
+walker.on('end', function() {
 
     console.log('Finished uploading files');
 
@@ -80,47 +134,6 @@ walker.on('file', function() {
             } else {
                 deploy(files);
             }
-        }
-    });
-});
-
-// After uploading all files.
-walker.on('end', function(root, file, next) {
-
-    var filePath = root + '/' + file.name;
-
-    var uploadTo = 'history/' + hash + '/' + filePath.replace(config.walk.path + "/", "");
-
-    var params = {
-        ACL: 'private',
-        Body: fs.createReadStream(filePath),
-        Bucket: config.aws.s3.bucket,
-        Key: uploadTo
-    };
-
-    var type = mime.getType(file.name);
-
-    if(type) {
-        params.ContentType = type;
-    }
-
-    console.log('Uploading ' + file.name + ' to ' + uploadTo);
-
-    s3.upload(params, function(err, data) {
-
-        if (err) {
-            console.log("Upload failed\n", err.message);
-        }
-
-        else {
-            console.log('File successfully uploaded');
-
-            files.push({
-                'path': filePath,
-                'uploadTo': uploadTo
-            });
-
-            next();
         }
     });
 });
