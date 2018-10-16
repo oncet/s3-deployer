@@ -1,4 +1,4 @@
-# s3-deployer
+# S3 Deployer
 
 A node script to upload files to S3.
 
@@ -9,18 +9,12 @@ All files will be uploaded to a `history/<hash>` folder and then copied to the b
 You can install the package globally using npm.
 
 ```
-npm i s3-deployer -g
+npm i -g s3-deployer
 ```
 
 ## Configuration
 
-Copy the included `config.example.json` to your project. E.g.:
-
-```
-cp /usr/local/lib/node_modules/s3-deployer/config.example.json config.json
-```
-
-Now edit the file.
+Copy the included `config.example.json` to your project as `config.json` and edit the file.
 
 ### `accessKeyId` and `secretAccessKey`
 
@@ -45,8 +39,7 @@ Simply call the script binary from inside your project.
 ```
 s3-deployer
 ```
-
-You can use a different config file by passing an argument.
+By default it will look for a `config.json` file but you can use a different file by passing an argument.
 
 ```
 s3-deployer my-config.json
