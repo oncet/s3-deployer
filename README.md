@@ -34,7 +34,7 @@ Optional. An array of directories to be ignored. E.g. `.git` or `node_modules`.
 
 ## Usage
 
-Simply run the script from inside your project.
+Simply run the script from a terminal inside your project.
 
 ```
 s3-deployer
