@@ -1,4 +1,4 @@
-# s3-deployer
+# S3 Deployer
 
 A node script to upload files to S3.
 
