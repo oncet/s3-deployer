@@ -39,8 +39,14 @@ Simply call the script binary from inside your project.
 ```
 s3-deployer
 ```
-By default it will look for a `config.json` file but you can use a different file by passing an argument.
+By default it will look for a `config.json` file but you can pass a different file by using `-c`.
 
 ```
-s3-deployer my-config.json
+s3-deployer -c my-config.json
+```
+
+Pass `-f` to skip the `git status` check.
+
+```
+s3-deployer -f
 ```
