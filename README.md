@@ -39,7 +39,7 @@ Simply call the script binary from inside your project.
 ```
 s3-deployer
 ```
-By default it will look for a `config.json` file but you can pass a different file by using `-c`.
+By default it will look for a `config.json` file but you can pass a different one by using `-c`.
 
 ```
 s3-deployer -c my-config.json
