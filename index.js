@@ -125,8 +125,8 @@ walker.on('end', function(root, file, next) {
     });
 });
 
-function deploy(files) {
-
+function deploy(files)
+{
     console.log('Deploying...');
 
     files.forEach(function(file) {
@@ -153,8 +153,8 @@ function deploy(files) {
     });
 }
 
-function config(file = 'config.json') {
-
+function config(file = 'config.json')
+{
     if(!fs.existsSync(file)) {
         return false;
     }
