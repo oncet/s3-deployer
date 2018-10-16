@@ -47,8 +47,6 @@ function step(root, file, next) {
 
     var filePath = root + '/' + file.name;
 
-    var fileContent = fs.createReadStream(filePath);
-
     var uploadTo = 'history/' + hash + '/' + filePath.replace(config.walk.path + "/", "");
 
     var params = {
