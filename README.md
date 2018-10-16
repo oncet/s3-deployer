@@ -1,8 +1,8 @@
 # S3 Deployer
 
-A node script to upload files to S3.
+A CLI tool for uploading files to Amazon S3 buckets.
 
-All files will be uploaded to a `history/<hash>` folder and then copied to the bucket's root.
+All files are uploaded to a `history/<hash>` folder and then copied to the bucket's root.
 
 ## Installation
 
@@ -34,7 +34,7 @@ Optional. An array of directories to be ignored. E.g. `.git` or `node_modules`.
 
 ## Usage
 
-Simply call the script from inside your project.
+Simply run the script from inside your project.
 
 ```
 s3-deployer
