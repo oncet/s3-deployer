@@ -6,7 +6,7 @@ All files will be uploaded to a `history/<hash>` folder and then copied to the b
 
 ## Installation
 
-You can install the package globally using npm.
+Install the package globally using npm.
 
 ```
 npm i -g s3-deployer
@@ -34,7 +34,7 @@ Optional. An array of directories to be ignored. E.g. `.git` or `node_modules`.
 
 ## Usage
 
-Simply call the script binary from inside your project.
+Simply call the script from inside your project.
 
 ```
 s3-deployer
