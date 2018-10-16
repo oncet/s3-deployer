@@ -38,52 +38,7 @@ var files = [];
 var walker = walk.walk(config.walk.path, {filters: config.walk.filters});
 
 // For each file on the directory...
-walker.on('file', step);
-
-// After uploading all files.
-walker.on('end', end);
-
-function step(root, file, next) {
-
-    var filePath = root + '/' + file.name;
-
-    var uploadTo = 'history/' + hash + '/' + filePath.replace(config.walk.path + "/", "");
-
-    var params = {
-        ACL: 'private',
-        Body: fs.createReadStream(filePath),
-        Bucket: config.aws.s3.bucket,
-        Key: uploadTo
-    };
-
-    var type = mime.getType(file.name);
-
-    if(type) {
-        params.ContentType = type;
-    }
-
-    console.log('Uploading ' + file.name + ' to ' + uploadTo);
-
-    s3.upload(params, function(err, data) {
-
-        if (err) {
-            console.log("Upload failed\n", err.message);
-        }
-
-        else {
-            console.log('File successfully uploaded');
-
-            files.push({
-                'path': filePath,
-                'uploadTo': uploadTo
-            });
-
-            next();
-        }
-    });
-}
-
-function end() {
+walker.on('file', function() {
 
     console.log('Finished uploading files');
 
@@ -127,7 +82,48 @@ function end() {
             }
         }
     });
-}
+});
+
+// After uploading all files.
+walker.on('end', function(root, file, next) {
+
+    var filePath = root + '/' + file.name;
+
+    var uploadTo = 'history/' + hash + '/' + filePath.replace(config.walk.path + "/", "");
+
+    var params = {
+        ACL: 'private',
+        Body: fs.createReadStream(filePath),
+        Bucket: config.aws.s3.bucket,
+        Key: uploadTo
+    };
+
+    var type = mime.getType(file.name);
+
+    if(type) {
+        params.ContentType = type;
+    }
+
+    console.log('Uploading ' + file.name + ' to ' + uploadTo);
+
+    s3.upload(params, function(err, data) {
+
+        if (err) {
+            console.log("Upload failed\n", err.message);
+        }
+
+        else {
+            console.log('File successfully uploaded');
+
+            files.push({
+                'path': filePath,
+                'uploadTo': uploadTo
+            });
+
+            next();
+        }
+    });
+});
 
 function deploy(files) {
 
