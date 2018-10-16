@@ -1,6 +1,6 @@
 {
   "name": "s3-deployer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "S3 uploader tool for node.",
   "keywords": [
     "aws-s3",
