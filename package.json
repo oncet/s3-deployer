@@ -4,6 +4,7 @@
   "description": "S3 uploader tool for node.",
   "keywords": [
     "aws-s3",
+    "aws-cloudfront",
     "deployer"
   ],
   "homepage": "https://github.com/oncet/s3-deployer",
