@@ -142,7 +142,11 @@ function deploy(files)
 {
     console.log('Deploying...');
 
+    var counter = 0;
+
     files.forEach(function(file) {
+
+        counter++;
 
         var copyTo = file.path.replace(config.walk.path + '/', '');
 
@@ -157,10 +161,50 @@ function deploy(files)
 
             if (err) {
                 console.log('Error while deploying ' + file.path, err.message);
+
+                return false;
             }
 
-            else {
-                console.log('Successfully deployed ' + file.path + ' to ' + copyTo);
+            console.log('Successfully deployed ' + file.path + ' to ' + copyTo);
+
+            if(counter === files.length) {
+
+                console.log('Finished deploying ' + files.length + " file(s)\n");
+
+                if(config.aws.cloudfront && config.aws.cloudfront.distributionId) {
+
+                    console.log('Invalidating CloudFront cache...');
+
+                    var cloudfront = new aws.CloudFront();
+
+                    var params = {
+                        DistributionId: config.aws.cloudfront.distributionId,
+                        InvalidationBatch: {
+                            CallerReference: Date.now().toString(),
+                            Paths: {
+                                Quantity: 1,
+                                Items: [
+                                    '/*'
+                                ]
+                            }
+                        }
+                    };
+
+                    cloudfront.createInvalidation(params, function(err, data) {
+
+                        if(err) {
+                            console.log('Error when trying to invalidate distribution', err);
+
+                            return false;
+                        }
+
+                        console.log(
+                            "Distribution invalidation successfully started, check your AWS console\n",
+                            'https://console.aws.amazon.com/cloudfront/home?#distribution-settings:'
+                            + config.aws.cloudfront.distributionId + "\n"
+                        );
+                    });
+                }
             }
         });
     });

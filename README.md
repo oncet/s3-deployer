@@ -4,6 +4,8 @@ A CLI tool for uploading files to Amazon S3 buckets.
 
 All files are uploaded to a `history/<hash>` folder and then copied to the bucket's root.
 
+Optionally, provide a CloudFront distribution ID to trigger a complete cache invalidation.
+
 ## Installation
 
 Install the package globally using npm.
@@ -23,6 +25,10 @@ Access and secret access keys given by AWS.
 ### `bucket`
 
 Bucket name.
+
+### `distributionId`
+
+Optional. A CloudFront distribution ID.
 
 ### `path`
 

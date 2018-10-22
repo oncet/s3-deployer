@@ -4,6 +4,9 @@
         "secretAccessKey": "",
         "s3": {
             "bucket": ""
+        },
+        "cloudfront": {
+            "distributionId": ""
         }
     },
     "walk": {
