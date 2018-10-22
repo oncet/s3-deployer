@@ -26,6 +26,8 @@ if(!config) {
     return false;
 }
 
+console.log("Config file loaded\n");
+
 var status = proc.execSync('git status').toString().split("\n");
 
 var nothingToCommit = status[1].startsWith('nothing to commit');
@@ -34,8 +36,6 @@ if(!nothingToCommit && !args.force) {
     console.log('There are pending changes');
     return false;
 }
-
-console.log('Config file loaded');
 
 // Setup AWS
 aws.config.accessKeyId     = config.aws.accessKeyId;
@@ -49,6 +49,8 @@ var files = [];
 
 // Walk the given path
 var walker = walk.walk(config.walk.path, {filters: config.walk.filters});
+
+console.log('Starting upload process...');
 
 // For each file on the directory...
 walker.on('file', function(root, file, next) {
@@ -76,64 +78,70 @@ walker.on('file', function(root, file, next) {
 
         if (err) {
             console.log("Upload failed\n", err.message);
+
+            return false;
         }
 
-        else {
-            console.log('File successfully uploaded');
+        console.log('File successfully uploaded');
 
-            files.push({
-                'path': filePath,
-                'uploadTo': uploadTo
-            });
+        files.push({
+            'path': filePath,
+            'uploadTo': uploadTo
+        });
 
-            next();
-        }
+        next();
     });
 });
 
 // After uploading all files.
 walker.on('end', function() {
 
-    console.log('Finished uploading files');
+    if(files.length < 1) {
+        console.log('Nothing to upload');
+        return false;
+    }
+
+    console.log('Finished uploading ' + files.length + " file(s)\n");
 
     s3.listObjects({Bucket: config.aws.s3.bucket}, function(err, data) {
 
         if(err) {
             console.log(err);
+
+            return false;
         }
 
-        else {
-            var objects = [];
+        var objects = [];
 
-            data.Contents.forEach(function(content) {
-                if(!content.Key.startsWith('history/')) {
-                    objects.push({Key: content.Key});
-                }
-            });
-
-            if(objects.length > 0) {
-
-                console.log('Deleting previous deploy');
-
-                var params = {
-                    Bucket: config.aws.s3.bucket,
-                    Delete: { Objects: objects }
-                };
-
-                s3.deleteObjects(params, function(err, data) {
-
-                    // If deleting failed
-                    if (err) {
-                        console.log(err);
-                    }
-
-                    else {
-                        deploy(files);
-                    }
-                });
-            } else {
-                deploy(files);
+        data.Contents.forEach(function(content) {
+            if(!content.Key.startsWith('history/')) {
+                objects.push({Key: content.Key});
             }
+        });
+
+        if(objects.length > 0) {
+
+            console.log('Deleting previous deploy...');
+
+            var params = {
+                Bucket: config.aws.s3.bucket,
+                Delete: { Objects: objects }
+            };
+
+            s3.deleteObjects(params, function(err, data) {
+
+                // If deleting failed
+                if (err) {
+                    console.log(err);
+
+                    return false;
+                }
+
+                console.log("Successfully deleted previous deploy\n");
+                deploy(files);
+            });
+        } else {
+            deploy(files);
         }
     });
 });
