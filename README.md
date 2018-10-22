@@ -1,6 +1,6 @@
 # S3 Deployer
 
-A CLI tool for uploading files to Amazon S3 buckets.
+A CLI tool for uploading files to Amazon S3 buckets using Node.js.
 
 All files are uploaded to a `history/<hash>` folder and then copied to the bucket's root.
 
