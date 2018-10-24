@@ -11,7 +11,7 @@ Optionally, provide a CloudFront distribution ID to trigger a complete cache inv
 Install the package globally using npm.
 
 ```
-npm i -g s3-deployer
+npm install -g s3-deployer
 ```
 
 ## Configuration
@@ -45,16 +45,16 @@ Simply run the script from a terminal inside your project.
 ```
 s3-deployer
 ```
-By default it will look for a `config.json` file but you can pass a different one by using `-c`.
+By default it will look for a `config.json` file but you can pass a different one by using `--config`.
 
 ```
-s3-deployer -c my-config.json
+s3-deployer --config my-config.json
 ```
 
-Pass `-f` to skip the `git status` check.
+Pass `--force` to skip the `git status` check.
 
 ```
-s3-deployer -f
+s3-deployer --force
 ```
 
-When using `-f` keep in mind that the contents of `history/<hash>` might not match the contents of the actual commit.
+When using `--force` keep in mind that the contents of `history/<hash>` might not match the contents of the actual commit.
