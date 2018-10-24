@@ -56,3 +56,5 @@ Pass `-f` to skip the `git status` check.
 ```
 s3-deployer -f
 ```
+
+When using `-f` keep in mind that the contents of `history/<hash>` might not match the contents of the actual commit.
