@@ -18,8 +18,10 @@ var args = require('minimist')(process.argv.slice(2), {
     }
 });
 
+var helpers = require('./helpers.js');
+
 // Get config file
-var config = config(args.config);
+var config = helpers.config(args.config);
 
 if(!config) {
     console.log('Config file not found');
@@ -138,87 +140,10 @@ walker.on('end', function() {
                 }
 
                 console.log("Successfully deleted previous deploy\n");
-                deploy(files);
+                helpers.deploy(files, config, s3, aws);
             });
         } else {
-            deploy(files);
+            helpers.deploy(files, config, s3, aws);
         }
     });
 });
-
-function deploy(files)
-{
-    console.log('Deploying...');
-
-    files.forEach(function(file, index) {
-
-        var copyTo = file.path.replace(config.walk.path + '/', '');
-
-        var params = {
-            ACL: 'public-read',
-            Bucket: config.aws.s3.bucket,
-            CopySource: config.aws.s3.bucket + '/' + file.uploadTo,
-            Key: copyTo
-        };
-
-        s3.copyObject(params, function(err, data) {
-
-            if (err) {
-                console.log('Error while deploying ' + file.path, err.message);
-
-                return false;
-            }
-
-            console.log('Successfully deployed ' + file.path + ' to ' + copyTo);
-
-            if(index === files.length) {
-
-                console.log('Finished deploying ' + files.length + " file(s)\n");
-
-                if(config.aws.cloudfront && config.aws.cloudfront.distributionId) {
-
-                    console.log('Invalidating CloudFront cache...');
-
-                    var cloudfront = new aws.CloudFront();
-
-                    var params = {
-                        DistributionId: config.aws.cloudfront.distributionId,
-                        InvalidationBatch: {
-                            CallerReference: Date.now().toString(),
-                            Paths: {
-                                Quantity: 1,
-                                Items: [
-                                    '/*'
-                                ]
-                            }
-                        }
-                    };
-
-                    cloudfront.createInvalidation(params, function(err, data) {
-
-                        if(err) {
-                            console.log('Error when trying to invalidate distribution', err);
-
-                            return false;
-                        }
-
-                        console.log(
-                            "Distribution invalidation successfully started, check your AWS console\n",
-                            'https://console.aws.amazon.com/cloudfront/home?#distribution-settings:'
-                            + config.aws.cloudfront.distributionId + "\n"
-                        );
-                    });
-                }
-            }
-        });
-    });
-}
-
-function config(file = 'config.json')
-{
-    if(!fs.existsSync(file)) {
-        return false;
-    }
-
-    return JSON.parse(fs.readFileSync(file));
-}
