@@ -150,11 +150,7 @@ function deploy(files)
 {
     console.log('Deploying...');
 
-    var counter = 0;
-
-    files.forEach(function(file) {
-
-        counter++;
+    files.forEach(function(file, index) {
 
         var copyTo = file.path.replace(config.walk.path + '/', '');
 
@@ -175,7 +171,7 @@ function deploy(files)
 
             console.log('Successfully deployed ' + file.path + ' to ' + copyTo);
 
-            if(counter === files.length) {
+            if(index === files.length) {
 
                 console.log('Finished deploying ' + files.length + " file(s)\n");
 
