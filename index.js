@@ -50,7 +50,7 @@ var files = [];
 // Walk the given path
 var walker = walk.walk(config.walk.path, {filters: config.walk.filters});
 
-console.log('Starting upload process...');
+console.log("Starting upload process...\n");
 
 // For each file on the directory...
 walker.on('file', function(root, file, next) {
