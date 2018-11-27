@@ -87,7 +87,7 @@ exports.config = function(file = 'config.json')
     return JSON.parse(fs.readFileSync(file));
 }
 
-exports.ignored = function(key, list)
+exports.ignored = function(key, list = [])
 {
     var ignored = false;
 
