@@ -5,7 +5,8 @@
   "keywords": [
     "aws-s3",
     "aws-cloudfront",
-    "deployer"
+    "deployer",
+    "uploader"
   ],
   "homepage": "https://github.com/oncet/s3-deployer",
   "bugs": {
