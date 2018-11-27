@@ -6,7 +6,9 @@ exports.deploy = function(files, config, s3, aws)
 {
     console.log('Deploying...');
 
-    files.forEach(function(file, index) {
+    var counter = 1;
+
+    files.forEach(function(file) {
 
         var copyTo = file.path.replace(config.walk.path + '/', '');
 
@@ -25,11 +27,15 @@ exports.deploy = function(files, config, s3, aws)
                 return false;
             }
 
-            console.log('Successfully deployed ' + file.path + ' to ' + copyTo);
+            console.log('Deployed ' + file.path + ' to ' + copyTo);
 
-            if(index + 1 === files.length) {
+            if(counter === files.length) {
 
-                console.log('Finished deploying ' + files.length + " file(s)\n");
+                console.log(
+                    'Finished deploying ' + files.length + " file(s)\n\n" +
+                    "View your bucket:\n" +
+                    'https://s3.console.aws.amazon.com/s3/buckets/' + config.aws.s3.bucket + "\n"
+                );
 
                 if(config.aws.cloudfront && config.aws.cloudfront.distributionId) {
 
@@ -59,13 +65,15 @@ exports.deploy = function(files, config, s3, aws)
                         }
 
                         console.log(
-                            "Distribution invalidation successfully started, check your AWS console\n",
-                            'https://console.aws.amazon.com/cloudfront/home?#distribution-settings:'
-                            + config.aws.cloudfront.distributionId + "\n"
+                            "Distribution invalidation started, check your AWS console:\n" +
+                            "https://console.aws.amazon.com/cloudfront/home?#distribution-settings:" +
+                            config.aws.cloudfront.distributionId + "\n"
                         );
                     });
                 }
             }
+
+            counter++;
         });
     });
 }
