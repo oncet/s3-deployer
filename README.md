@@ -38,6 +38,10 @@ The contents of this path will be uploaded to the S3 bucket. E.g. `dist` or `bui
 
 Optional. An array of directories to be ignored. E.g. `.git` or `node_modules`.
 
+### `keep`
+
+Optional. An array of files to ignore during the pruning process.
+
 ## Usage
 
 Simply run the script from a terminal inside your project.
