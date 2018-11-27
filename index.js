@@ -52,7 +52,7 @@ var files = [];
 // Walk the given path
 var walker = walk.walk(config.walk.path, {filters: config.walk.filters});
 
-console.log("Starting upload process...\n");
+console.log("Starting upload to " + config.aws.s3.bucket + "/" + hash + "\n");
 
 // For each file on the directory...
 walker.on('file', function(root, file, next) {
@@ -74,7 +74,7 @@ walker.on('file', function(root, file, next) {
         params.ContentType = type;
     }
 
-    console.log('Uploading ' + file.name + ' to ' + uploadTo);
+    console.log('Uploading ' + filePath);
 
     s3.upload(params, function(err, data) {
 
@@ -84,7 +84,7 @@ walker.on('file', function(root, file, next) {
             return false;
         }
 
-        console.log('File successfully uploaded');
+        console.log("File uploaded!\n");
 
         files.push({
             'path': filePath,
@@ -139,7 +139,7 @@ walker.on('end', function() {
                     return false;
                 }
 
-                console.log("Successfully deleted previous deploy\n");
+                console.log("Finished deleting previous deploy\n");
                 helpers.deploy(files, config, s3, aws);
             });
         } else {
