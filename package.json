@@ -14,7 +14,9 @@
   },
   "main": "index.js",
   "license": "ISC",
-  "bin": "./index.js",
+  "bin": {
+    "deploy": "./index.js"
+  },
   "repository": {
     "type": "git",
     "ulr": "github:oncet/s3-deployer"
