@@ -116,7 +116,11 @@ walker.on('end', function() {
         var objects = [];
 
         data.Contents.forEach(function(content) {
-            if(!content.Key.startsWith('history/')) {
+
+            if(
+                !content.Key.startsWith('history/') &&
+                !helpers.ignored(content.Key, config.keep)
+            ) {
                 objects.push({Key: content.Key});
             }
         });
