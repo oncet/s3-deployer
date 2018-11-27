@@ -52,7 +52,7 @@ var files = [];
 // Walk the given path
 var walker = walk.walk(config.walk.path, {filters: config.walk.filters});
 
-console.log("Starting upload to " + config.aws.s3.bucket + "/" + hash + "\n");
+console.log("Starting upload to " + config.aws.s3.bucket + "/history/" + hash + "\n");
 
 // For each file on the directory...
 walker.on('file', function(root, file, next) {
