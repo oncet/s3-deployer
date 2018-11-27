@@ -47,18 +47,18 @@ Optional. An array of files to ignore during the pruning process.
 Simply run the script from a terminal inside your project.
 
 ```
-s3-deployer
+deploy
 ```
 By default it will look for a `config.json` file but you can pass a different one by using `--config`.
 
 ```
-s3-deployer --config my-config.json
+deploy --config my-config.json
 ```
 
 Pass `--force` to skip the `git status` check.
 
 ```
-s3-deployer --force
+deploy --force
 ```
 
 When using `--force` keep in mind that the contents of `history/<hash>` might not match the contents of the actual commit.
