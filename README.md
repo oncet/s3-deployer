@@ -65,7 +65,7 @@ When using `--force` keep in mind that the contents of `history/<hash>` might no
 
 ## License
 
-Copyright 2018 oncet
+Copyright 2018 Camilo Rivera
 
 Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
 
