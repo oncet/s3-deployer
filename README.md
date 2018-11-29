@@ -63,6 +63,12 @@ deploy --force
 
 When using `--force` keep in mind that the contents of `history/<hash>` might not match the contents of the actual commit.
 
+You can deploy an already uploaded version by passing `--commit` with a given hash.
+
+```
+deploy --commit c72aacd
+```
+
 ## License
 
 Copyright 2018 Camilo Rivera
