@@ -60,7 +60,7 @@ if(args.commit) {
     s3.listObjects(listParams, function(err, data) {
 
         files = data.Contents.map(content => ({
-            path: config.walk.path + '/' + content.Key.split('/').pop(),
+            path: config.walk.path + '/' + content.Key.replace('history/' + args.commit + '/', ''),
             uploadTo: content.Key,
         }));
 
