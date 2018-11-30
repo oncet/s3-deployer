@@ -49,13 +49,13 @@ Simply run the script from a terminal inside your project.
 ```
 deploy
 ```
-By default it will look for a `config.json` file but you can pass a different one by using `--config`.
+By default it will look for a `config.json` file but you can pass a different one by using `--config` or `-c`.
 
 ```
 deploy --config my-config.json
 ```
 
-Pass `--force` to skip the `git status` check.
+Pass `--force` or `-f` to skip the `git status` check.
 
 ```
 deploy --force
