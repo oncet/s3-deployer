@@ -99,3 +99,52 @@ exports.ignored = function(key, list = [])
 
     return ignored;
 }
+
+exports.prune = function(aws, s3, config, files)
+{
+    s3.listObjects({Bucket: config.aws.s3.bucket}, function(err, data) {
+
+        if(err) {
+            console.log(err);
+
+            return false;
+        }
+
+        var objects = [];
+
+        data.Contents.forEach(function(content) {
+
+            if(
+                !content.Key.startsWith('history/') &&
+                !module.exports.ignored(content.Key, config.keep)
+            ) {
+                objects.push({Key: content.Key});
+            }
+        });
+
+        if(objects.length > 0) {
+
+            console.log('Deleting previous deploy...');
+
+            var params = {
+                Bucket: config.aws.s3.bucket,
+                Delete: { Objects: objects }
+            };
+
+            s3.deleteObjects(params, function(err, data) {
+
+                // If deleting failed
+                if (err) {
+                    console.log(err);
+
+                    return false;
+                }
+
+                console.log("Finished deleting previous deploy\n");
+                module.exports.deploy(files, config, s3, aws);
+            });
+        } else {
+            module.exports.deploy(files, config, s3, aws);
+        }
+    });
+}

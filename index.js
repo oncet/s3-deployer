@@ -64,51 +64,7 @@ if(args.commit) {
             uploadTo: content.Key,
         }));
 
-        s3.listObjects({Bucket: config.aws.s3.bucket}, function(err, data) {
-
-            if(err) {
-                console.log(err);
-
-                return false;
-            }
-
-            var objects = [];
-
-            data.Contents.forEach(function(content) {
-
-                if(
-                    !content.Key.startsWith('history/') &&
-                    !helpers.ignored(content.Key, config.keep)
-                ) {
-                    objects.push({Key: content.Key});
-                }
-            });
-
-            if(objects.length > 0) {
-
-                console.log('Deleting previous deploy...');
-
-                var params = {
-                    Bucket: config.aws.s3.bucket,
-                    Delete: { Objects: objects }
-                };
-
-                s3.deleteObjects(params, function(err, data) {
-
-                    // If deleting failed
-                    if (err) {
-                        console.log(err);
-
-                        return false;
-                    }
-
-                    console.log("Finished deleting previous deploy\n");
-                    helpers.deploy(files, config, s3, aws);
-                });
-            } else {
-                helpers.deploy(files, config, s3, aws);
-            }
-        });
+        helpers.prune(aws, s3, config, files);
     });
 }
 
@@ -169,50 +125,6 @@ else {
 
         console.log('Finished uploading ' + files.length + " file(s)\n");
 
-        s3.listObjects({Bucket: config.aws.s3.bucket}, function(err, data) {
-
-            if(err) {
-                console.log(err);
-
-                return false;
-            }
-
-            var objects = [];
-
-            data.Contents.forEach(function(content) {
-
-                if(
-                    !content.Key.startsWith('history/') &&
-                    !helpers.ignored(content.Key, config.keep)
-                ) {
-                    objects.push({Key: content.Key});
-                }
-            });
-
-            if(objects.length > 0) {
-
-                console.log('Deleting previous deploy...');
-
-                var params = {
-                    Bucket: config.aws.s3.bucket,
-                    Delete: { Objects: objects }
-                };
-
-                s3.deleteObjects(params, function(err, data) {
-
-                    // If deleting failed
-                    if (err) {
-                        console.log(err);
-
-                        return false;
-                    }
-
-                    console.log("Finished deleting previous deploy\n");
-                    helpers.deploy(files, config, s3, aws);
-                });
-            } else {
-                helpers.deploy(files, config, s3, aws);
-            }
-        });
+        helpers.prune(aws, s3, config, files);
     });
 }
